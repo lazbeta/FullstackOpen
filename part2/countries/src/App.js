@@ -1,40 +1,50 @@
 import {useState , useEffect} from 'react'
 import axios from 'axios'
 
-    const CountryList = (props) => {
-      console.log(props, 'props')
-      const filteredCountries = props.filteredCountries
-      const handleShow = props.handleShow
-        return (
-          <ul>
-            {
-              filteredCountries.map(country => 
-              <li key={country.name.common}>
-                {country.name.common}
-                <Button onClick={handleShow} text="show"/>
-              </li>)
-            }
-          </ul>
-        ) }
+const Country = ({country}) => {
 
-      const Button = (props) => {
-        const {onClick, text} = props 
+  return (
+          <div>
+   
+          <h2>{country.name.common}</h2>
+          <p>capital: {country.capital} <br/> population: {country.population}</p>
+          <img
+          src={country.flag}
+          height={50}
+          width={50}/>
+             </div>
+  )
+}
+
+const Filter = ({query, countries}) => {
+  const filteredCountries = countries.filter(country => (
+    country.name.common.toLowerCase().includes(query.toLowerCase())
+    )) 
+    if (!query) {
+
+        return <></>
+      } else if (filteredCountries.length === 1) {
         return (
-          <button onClick={onClick}>{text}</button>
+          <div key={filteredCountries[0].name}>
+          <Country country={filteredCountries[0]}/>
+        </div>
         )
+      } else if (filteredCountries.length > 2 || filteredCountries.length <=10) {
+        return (
+          <div>
+            {filteredCountries.map(country=> {
+              return (
+                <div key={country.name.common}>
+                  <p>{country.name.common}</p>
+                </div>
+              )
+            })}
+          </div>
+  
+          )} else if (filteredCountries.length > 10){
+        return <div>too many matches, specify your search</div>
       }
-    
-      const Country = ({country}) => {
-        return  (
-            <div key={country.name.common}>
-             <h3>{country.name.common}</h3>
-             <p>capital {country.capital}
-              population: {country.population}</p>
-              <h3>Spoken languages</h3>
-              <p>{country.languages}</p>
-              <p>{country.flag}</p>
-        </div>)
-        }
+}
 
   const App = () => {
   const [query, setQuery] = useState('')
@@ -48,43 +58,20 @@ import axios from 'axios'
     })
   }, []);
 
-  const handleShow = (name) => setQuery(name)
-
-  const filteredCountries = countries.filter(country => (
-  country.name.common.toLowerCase().includes(query.toLowerCase())
-    )) 
-        if (!query) {
-          return <></>
-        };
-        
-    if (filteredCountries.length > 10 )  {
-      return (
-        <div>
-         <p>too many matches, try different filter</p></div>
-         )} 
-    else if (filteredCountries.length > 1 || filteredCountries.length <= 10) 
-     {
-      return (
-        <div>
-      <CountryList filteredCountries={filteredCountries} handleShow={handleShow}/>
-        </div>
-        ) 
-      }
-     else if (filteredCountries.length === 1 ) {
-        return <Country country={filteredCountries[0]}/>
-      }
-  
 
   return (
     <div>
-<label>find country</label>
-<input
-type="text"
-value={query}
-placeholder='search'
-onChange={e => setQuery(e.target.value)}/>
+    <label>find country</label>
+    <input
+    type="text"
+    value={query}
+    placeholder='search'
+    onChange={e => setQuery(e.target.value)}/>
 
-<div>{JSON.stringify(filteredCountries)}</div>
+    <Filter
+    countries={countries}
+    query={query}
+    />
 
     </div>
   )
