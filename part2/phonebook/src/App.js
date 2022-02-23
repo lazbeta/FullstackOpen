@@ -38,9 +38,7 @@ const App = () => {
 
   if (oldPerson) {
     window.confirm(  
-    <div className="notification">
-      {newName} is already added to the phonebook, replace the old number with a new one?
-    </div>
+     ` ${newName} is already added to the phonebook, replace the old number with a new one?`
     )
    &&
      personService
@@ -49,22 +47,30 @@ const App = () => {
       setPersons(persons.map(person => person.id !== oldPerson.id ? person : updatePerson))
       console.log(returnedPerson)
 
-
       setShowMessage(
         <div className="notification" >
           {oldPerson.name} has been updated
           </div>
       )
+
+      .catch(error => {
+        setShowMessage(error.response.data.error)
+       console.log(error.response.data.error)
+       })
+
       setTimeout(() => {
         setShowMessage(null)
       }, 5000)
+
+      setNewName('')
+      setNewNumber('')
+
     })
    } else {
     personService 
     .create(nameObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-
+      .then(savedPerson => {
+        setPersons(persons.concat(savedPerson))
         setShowMessage(
           <div className="notification">
             {newName} has been added to the phone book.
@@ -72,10 +78,23 @@ const App = () => {
         )
         setTimeout(() => {
           setShowMessage(null)
-        }, 5000)
+        }, 3500)
       })
+      .catch(error => {
+       setShowMessage(<div className='error'>
+         {error.response.data.error}
+       </div>
+       )
+      console.log(error.response.data.error)
+      })
+      setTimeout(() => {
+        setShowMessage(null)
+      }, 3500)
+      setNewName('')
+      setNewNumber('')
+
   }
-}
+  }
 
 
 
@@ -83,11 +102,13 @@ const App = () => {
   const handleDeleteOf = (id) =>{
     const person = persons.find(p => p.id === id)
     window.confirm(`Delete ${person.name}?`)
+    &&
     personService
     .deletePerson(id)
       .then(() => {
       setPersons(persons.filter(p => p.id !== id))
       })
+
       .catch(error => {
         setShowMessage(
          <div className='error'>
