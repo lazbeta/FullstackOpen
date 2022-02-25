@@ -43,29 +43,26 @@ const App = () => {
    &&
      personService
     .update(oldPerson.id, updatePerson)
-    .then(returnedPerson => {
+    .then(updatePerson => {
       setPersons(persons.map(person => person.id !== oldPerson.id ? person : updatePerson))
-      console.log(returnedPerson)
-
       setShowMessage(
         <div className="notification" >
           {oldPerson.name} has been updated
           </div>
       )
-
-      .catch(error => {
-        setShowMessage(error.response.data.error)
-       console.log(error.response.data.error)
-       })
-
       setTimeout(() => {
         setShowMessage(null)
       }, 5000)
-
-      setNewName('')
-      setNewNumber('')
-
     })
+    .catch(error => {
+      setShowMessage(<div className='error'>
+        {error.response.data.error}
+      </div>
+      )
+     })
+     setTimeout(() => {
+      setShowMessage(null)
+    }, 5000)
    } else {
     personService 
     .create(nameObject)
