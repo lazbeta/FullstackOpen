@@ -12,6 +12,7 @@ const requestLogger = (request, response, next) => {
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
+  next()
 }
 
 const errorHandler = (error, request, response, next) => {
@@ -33,14 +34,13 @@ const tokenExtractor = (request, response, next) => {
 
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     request.token = authorization.substring(7)
-    next()
+    return next();
   }
   request.token = null 
   next()
 }
 
 const userExtractor = async (request, response, next) => {
-  console.log('user exractor')
   const token = request.token
   const decodedToken = jwt.verify(token, process.env.SECRET)
 

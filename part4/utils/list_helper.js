@@ -12,7 +12,6 @@ const totalLikes = (blogs) => {
 
 const favouriteBlog = (blogs) => {
     return blogs.reduce((max, blog) => max && max.likes > blog.likes ? max : blog, [])
-
 }
 
 const mostBlogs = (blogs) => {
@@ -24,11 +23,6 @@ const mostBlogs = (blogs) => {
     //returns name and number of blogs
 }
 
-const mostLikes = (blogs) => {
-    
-    let result = _.chain(blogs).countBy().toPairs().head().value()
-}
-
 
 
 
@@ -36,6 +30,5 @@ module.exports = {
     dummy,
     totalLikes,
     favouriteBlog,
-    mostBlogs,
-    mostLikes
+    mostBlogs
 }
