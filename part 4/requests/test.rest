@@ -1,0 +1,31 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsenUiLCJpZCI6IjYyMjYzMGM2YWEwNjZlNmExZmNhMGI5ZiIsImlhdCI6MTY0NjcyODk2Nn0.2Q4V-R3uVVRkj4R4o_HlKE6SzuKAJPVmV0Bv_xYjhZg
+
+{
+  "title": "Helloooo",
+  "author": "Adele",
+  "url": "http://hello.com/blogs/adele/999",
+  "likes": "32"
+}
+
+###
+
+GET http://localhost:3003/api/blogs
+Content-Type: application/json
+
+
+###
+post http://localhost:3003/api/users
+Content-Type: application/json
+
+  {
+      "username": "hygy",
+      "name": "hygy",
+      "password": "aha"
+  }
+
+###
+delete http://localhost:3003/api/blogs/62270fa9c353c92c9d29ee44
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsenUiLCJpZCI6IjYyMjYzMGM2YWEwNjZlNmExZmNhMGI5ZiIsImlhdCI6MTY0NjcyODk2Nn0.2Q4V-R3uVVRkj4R4o_HlKE6SzuKAJPVmV0Bv_xYjhZg
