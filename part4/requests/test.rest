@@ -20,12 +20,12 @@ post http://localhost:3003/api/users
 Content-Type: application/json
 
   {
-      "username": "hygy",
-      "name": "hygy",
-      "password": "aha"
+      "username": "miles",
+      "name": "mile",
+      "password": "a"
   }
 
 ###
-delete http://localhost:3003/api/blogs/62270fa9c353c92c9d29ee44
+delete http://localhost:3003/api/blogs/622752003f049d0464f42da1
 Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsenUiLCJpZCI6IjYyMjYzMGM2YWEwNjZlNmExZmNhMGI5ZiIsImlhdCI6MTY0NjcyODk2Nn0.2Q4V-R3uVVRkj4R4o_HlKE6SzuKAJPVmV0Bv_xYjhZg

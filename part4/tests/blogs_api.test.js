@@ -13,28 +13,28 @@ const initialBlogs = [
         author: 'Edsger W. Dijkstra',
         url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
         likes: 5
-      },
+    },
 
-      {
+    {
         title: 'This is the end',
         author: 'Bruno Jano',
         url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
         likes: 19
-      },
+    },
 
-      {
+    {
         title: 'Where is ?',
         author: 'Maria M',
         url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
         likes: 1
-      },
+    },
 
-      {
+    {
         title: 'Going through the valley',
         author: 'Emil Lajcak',
         url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
         likes: 9
-      },
+    },
 ]
 
 beforeEach(async () => {
@@ -52,7 +52,25 @@ beforeEach(async () => {
     await blogObject.save()
 })
 
-describe('blogs are beign returned + check id', () => {
+beforeEach(async () => {
+        await User.deleteMany({})
+
+        const saltRounds = 10
+        const passwordHash = await bcrypt.hash('hello', saltRounds)
+        const user = new User({ username:'test', passwordHash })
+
+        await user.save()
+
+        let loginDetails = await api
+            .post('/api/login')
+            .send({username:'test', password: 'hello'})
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+
+        authenticationHeader = `bearer ${loginDetails.body.token}`
+    })
+
+describe('blogs are being returned + check id', () => {
 test('blog is returned as json', async () => {
     await api
     .get('/api/blogs')
@@ -74,6 +92,7 @@ expect(response.body[0].id).toBeDefined()
 describe('chceck missing url/title + default likes is 0 chceck', () => {
 
 test('if likes are missing, give 0', async () => {
+
 const newBlog = {
     title: 'Nothing New',
     author: 'Eva Weber',
@@ -81,6 +100,7 @@ const newBlog = {
 }
     await api 
     .post('/api/blogs')
+    .set('Authorization', authenticationHeader)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -98,6 +118,7 @@ const newBlog = {
 }
     await api 
     .post('/api/blogs')
+    .set('Authorization', authenticationHeader)
     .send(newBlog)
     .expect(400)
     
@@ -108,15 +129,37 @@ const newBlog = {
 
 describe('add, delete, update', () => {
 test('a blog entry can be deleted', async () => {
-    const blogsAtStart = await api.get(`/api/blogs`)
-    const aBlogToBeDeleted = blogsAtStart.body[0]
+    //login
+    await api
+    .post('/api/login')
+    .send({username:'test', password: 'hello'})
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+    const newBlog = {
+        title: 'Going',
+        author: 'here',
+        url: 'http://www.martinus.sk/123456',
+        likes: 21,
+    }
+    //create new blog
+    await api
+    .post('/api/blogs')
+    .set('Authorization', authenticationHeader)
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+    const blogsAtStart = await Blog.find({}).populate('user')
+    const aBlogToBeDeleted = blogsAtStart[4]
 
     await api
     .delete(`/api/blogs/${aBlogToBeDeleted.id}`)
+    .set('Authorization', authenticationHeader)
     .expect(204)
 
     const blogsAtTheEnd = await api.get('/api/blogs')
-    expect(blogsAtTheEnd.body).toHaveLength(initialBlogs.length - 1)
+    expect(blogsAtTheEnd.body).toHaveLength(blogsAtStart.length - 1)
 
     const contents = blogsAtTheEnd.body.map(r => r.title)
     expect(contents).not.toContain(aBlogToBeDeleted.title)
@@ -133,6 +176,7 @@ test('a valid blog can be posted', async () => {
 
     await api
     .post('/api/blogs')
+    .set('Authorization', authenticationHeader)
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -153,6 +197,7 @@ test('check if likes are being updated', async () => {
 
     await api
     .put(`/api/blogs/${aBlogToBeUpdated.id}`)
+    .set('Authorization', authenticationHeader)
     .send({likes:300})
     .expect(200)
     .expect('Content-Type', /application\/json/)
@@ -165,14 +210,6 @@ test('check if likes are being updated', async () => {
 })
 
 describe('check user requiriments when creating user', () => {
-    beforeEach(async () => {
-        await User.deleteMany({})
-
-        const passwordHash = await bcrypt.hash('tajneheslo', 10)
-        const user = new User ({ username: 'root', passwordHash })
-
-        await user.save()
-    })
 
     const usersInDb = async () => {
     const users = await User.find({})
@@ -202,22 +239,22 @@ describe('check user requiriments when creating user', () => {
     const usersAtStart = await usersInDb()
 
     const newUser = {
-      username: 'root',
-      name: 'super',
-      password: 'heslo',
+        username: 'test',
+        name: 'super',
+        password: 'heslo',
     }
 
     const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/)
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
 
     expect(result.body.error).toContain('username must be unique')
 
     const usersAtEnd = await usersInDb()
     expect(usersAtEnd).toEqual(usersAtStart)
-  })
+    })
 
 })
 afterAll(() => {
