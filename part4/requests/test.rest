@@ -1,12 +1,12 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsenUiLCJpZCI6IjYyMjYzMGM2YWEwNjZlNmExZmNhMGI5ZiIsImlhdCI6MTY0NjcyODk2Nn0.2Q4V-R3uVVRkj4R4o_HlKE6SzuKAJPVmV0Bv_xYjhZg
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsenUxIiwiaWQiOiI2MjJiNTRmNGVhODZmNDIyOGNlNjcyNTciLCJpYXQiOjE2NDcwMDcwMDl9.bTyeUZmUNamOjB92BzrIxrqw33PAVg7HHGh699iqDGc
 
 {
-  "title": "Helloooo",
-  "author": "Adele",
-  "url": "http://hello.com/blogs/adele/999",
-  "likes": "32"
+  "title": "This Is You",
+  "author": "Jan Hel",
+  "url": "http://janhel.com/blogs/jan/96",
+  "likes": "31"
 }
 
 ###
@@ -20,12 +20,30 @@ post http://localhost:3003/api/users
 Content-Type: application/json
 
   {
-      "username": "miles",
-      "name": "mile",
-      "password": "a"
+      "username": "alzu1",
+      "name": "alzbeta",
+      "password": "alzu1"
   }
 
 ###
-delete http://localhost:3003/api/blogs/622752003f049d0464f42da1
+delete http://localhost:3003/api/blogs/622b77d77257ffd2c3103941
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsenUiLCJpZCI6IjYyMjYzMGM2YWEwNjZlNmExZmNhMGI5ZiIsImlhdCI6MTY0NjcyODk2Nn0.2Q4V-R3uVVRkj4R4o_HlKE6SzuKAJPVmV0Bv_xYjhZg
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsenUxIiwiaWQiOiI2MjJiNTRmNGVhODZmNDIyOGNlNjcyNTciLCJpYXQiOjE2NDczMzEyOTJ9.CU2KY0CfjrS8aayAIeGEQPRzzTpo2uk-ThKlovCWu7o
+
+###
+
+post http://localhost:3003/api/login
+Content-Type: application/json
+
+  {
+      "username": "alzu1",
+      "password": "alzu1"
+  }
+
+###
+PUT http://localhost:3003/api/blogs/622b57557257ffd2c31038d9
+Content-Type: application/json
+
+{
+  "likes": 99
+}
