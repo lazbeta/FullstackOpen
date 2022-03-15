@@ -1,5 +1,3 @@
-const res = require("express/lib/response");
-const { contentType } = require("express/lib/response")
 const _ = require("lodash");
 
 const dummy = (blogs) => {
