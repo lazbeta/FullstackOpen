@@ -17,10 +17,10 @@ const App = () => {
 
   useEffect(() => {
     blogService
-    .getAll()
-    .then(blogs =>
-      setBlogs(blogs)
-    )  
+      .getAll()
+      .then(blogs =>
+        setBlogs(blogs)
+      )
   }, [])
 
   useEffect(() => {
@@ -31,34 +31,6 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-
-  const blogFormRef = useRef()
-
-  const addBlog = (newBlog) => {
-    blogFormRef.current.toggleVisibility()
-      blogService
-        .create(newBlog)
-        .then(returnedBlog => {
-          setBlogs(blogs.concat(returnedBlog))
-          setShowMessage(
-            <div className='notification'>
-              {newBlog.title} has been added to the bloglist
-            </div>
-          )
-          setTimeout(() => {
-          setShowMessage(null)
-        }, 5000)
-        })
-  }
-
-  const blogForm = () => {
-    return (
-      <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog}/>
-      </Togglable>
-    )
-  }
-  
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -71,7 +43,7 @@ const App = () => {
       blogService.setToken(user.token)
       window.localStorage.setItem(
         'loggedBlogeappUser', JSON.stringify(user)
-      ) 
+      )
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -85,49 +57,93 @@ const App = () => {
     }
   }
 
-const loginForm = () => {
-return(
-    <div>
+  const loginForm = () => {
+    return(
+      <div>
         <LoginForm
-        username={username}
-        password={password}
-        handlePasswordChange={({target}) => setPassword(target.value)}
-        handleUsernameChange={({target}) => setUsername(target.value)}
-        handleSubmit={handleLogin}
+          username={username}
+          password={password}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handleSubmit={handleLogin}
         />
       </div>
-      ) 
+    )
+  }
+
+  const addBlog = (newBlog) => {
+    blogFormRef.current.toggleVisibility()
+    blogService
+      .create(newBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setShowMessage(
+          <div className='notification'>
+            {newBlog.title} has been added to the bloglist
+          </div>
+        )
+        setTimeout(() => {
+          setShowMessage(null)
+        }, 5000)
+      })
+  }
+
+  const blogForm = () => {
+    return (
+      <Togglable buttonLabel="new blog" ref={blogFormRef}>
+        <BlogForm createBlog={addBlog}/>
+      </Togglable>
+    )
+  }
+
+  const updateBlogs = () => {
+    blogService
+      .getAll()
+      .then(blogs => {
+        let newBlogList = [...blogs]
+        setBlogs(newBlogList)
+        setShowMessage(
+          <div className='notification'>
+            {blogs.title} has been deleted
+          </div>
+        )
+        setTimeout(() => {
+          setShowMessage(null)
+        }, 5000)
+      })
   }
 
   const logout = () => {
-        localStorage.clear()
-        window.location.href = '/'
+    localStorage.clear()
+    window.location.href = '/'
   }
+
+  const blogFormRef = useRef()
 
   return (
     <>
       <h2>blogs</h2>
-        <Notification message={showMessage}/>
-        {
+      <Notification message={showMessage}/>
+      {
         user === null ?
-        loginForm() :
-        <div>
-          <p>{user.name} is logged-in</p>
-          <button onClick={logout} type="submit">logout</button>
-
-          <h2>create new</h2>
-          {blogForm()}
-          <br/>
-          <h2>blogs</h2>
+          loginForm() :
           <div>
-            {
-          blogs
-          .sort((a, b) => b.likes - a.likes)
-          .map(blog => <Blog key={blog.id} blog={blog}/>)
-          }
+            <p>{user.name} is logged-in</p>
+            <button onClick={logout} type="submit">logout</button>
+
+            <h2>create new</h2>
+            {blogForm()}
+            <br/>
+            <h2>blogs</h2>
+            <div>
+              {
+                blogs
+                  .sort((a, b) => b.likes - a.likes)
+                  .map(blog => <Blog key={blog.id} blog={blog} update={updateBlogs}/>)
+              }
+            </div>
           </div>
-        </div>
-        }
+      }
     </>
   )
 }
