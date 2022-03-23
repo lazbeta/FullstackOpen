@@ -21,8 +21,8 @@ const create = async newObject => {
 }
 
 const updateLikes = async (id, newObject) => {
-  const response = await axios.put(`${baseUrl}/${id}`, newObject)
-  return response.data
+  const request = await axios.put(`${baseUrl}/${id}`, newObject)
+  return request.data
 }
 
 const deleteBlog = async (id) => {
