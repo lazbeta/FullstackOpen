@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -96,7 +97,7 @@ const App = () => {
     )
   }
 
-  const updateBlogs = () => {
+  const updateBlogsAfterDeletion = () => {
     blogService
       .getAll()
       .then(blogs => {
@@ -104,13 +105,20 @@ const App = () => {
         setBlogs(newBlogList)
         setShowMessage(
           <div className='notification'>
-            {blogs.title} has been deleted
+            blog has been deleted
           </div>
         )
         setTimeout(() => {
           setShowMessage(null)
         }, 5000)
       })
+  }
+
+
+  const handleLikes = blog => {
+    const updatingLikes = { ...blog, likes: blog.likes }
+    blogService.updateLikes(blog.id, updatingLikes)
+      .then(() => blogService.getAll()).then(blogs => setBlogs(blogs))
   }
 
   const logout = () => {
@@ -139,7 +147,7 @@ const App = () => {
               {
                 blogs
                   .sort((a, b) => b.likes - a.likes)
-                  .map(blog => <Blog key={blog.id} blog={blog} update={updateBlogs}/>)
+                  .map(blog => <Blog key={blog.id} blog={blog} updateLikes={handleLikes} update={updateBlogsAfterDeletion}/>)
               }
             </div>
           </div>

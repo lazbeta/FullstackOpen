@@ -2,25 +2,22 @@ import React from 'react'
 import { useState } from 'react'
 import blogService from '../../src/services/blogs'
 
-const Blog = ({ update, blog }) => {
+const Blog = ({ update, blog, updateLikes }) => {
 
   const [visibleBlogDetails, setVisibleBlogDetails] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
+
 
   const hideWhenVisible = { display: visibleBlogDetails ? 'none' : '' }
   const showWhenVisible = { display: visibleBlogDetails ? '' : 'none' }
 
-
-  const updateLikesFunction = () => {
-    let getBlog = { ...blog }
-    let updateBlog = { ...getBlog, likes: likes }
-
-    blogService
-      .updateLikes(getBlog.id, updateBlog)
-      .then( () =>
-        setLikes(likes + 1)
-      )
+  const addLikes = () => {
+    updateLikes({
+      ...blog,
+      likes: blog.likes + 1
+    })
   }
+
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -41,7 +38,7 @@ const Blog = ({ update, blog }) => {
 
   return (
 
-    <div style={blogStyle}>
+    <div className='blogs' style={blogStyle}>
       <div className='blog'>
         {blog.title}, {blog.author}
         <div style={hideWhenVisible}>
@@ -52,9 +49,10 @@ const Blog = ({ update, blog }) => {
       <div style={showWhenVisible} className="showUrlAndLikes">
           blog url: {blog.url}
         <br/>
-          likes: {likes}
-        <button className='like' onClick={updateLikesFunction}>like</button>
+          likes: {blog.likes}
+        <button className='like' onClick={addLikes}>like</button>
         <br/>
+          user: {blog.user.name}
         <br/>
         <button onClick={handleDelete}>delete</button>
         <br/>
