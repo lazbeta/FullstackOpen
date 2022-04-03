@@ -1,4 +1,4 @@
-# Fullstack_Course_Uni_Hki
+# Fullstack Open 2022
 
 This repo includes completed tasks for Fullstack Dev Course at University of Helsinki (open university)
 
