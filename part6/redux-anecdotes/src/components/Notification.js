@@ -1,22 +1,13 @@
 import { connect } from "react-redux"
+import '../index.css'
 //import { useSelector } from "react-redux"
 
 const Notification = (props) => {
 
 //const notification = useSelector(state => state.notification)
 
-  console.log(props.notification, 'notificattion')
-  
-  const style = {
-    border: 'solid',
-    padding: 10,
-    borderWidth: 2
-  }
-
   return (
-    <div style={style}>
-      {props.notification}
-    </div>
+    <div id="notification">{props.notification}</div>
   )
 }
 

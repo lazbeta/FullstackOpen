@@ -11,7 +11,7 @@
     event.target.anecdote.value = ''
 
     props.createNewAnecdote(content)
-    props.setTheNotifications({message: `you created a new anecodte! ${content}.`}, 0.5)
+    props.setTheNotifications({message: `you created a new anecodte! ${content}.`},2)
   }
     
     return (

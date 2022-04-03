@@ -15,7 +15,7 @@ const Anecdotes = () => {
 
     const vote = anecdote => {
     dispatch(votedAnecdote(anecdote.id, {...anecdote, votes: anecdote.votes + 1}))
-    dispatch(setTheNotifications({message: `you voted! ${anecdote.content}`}, 0.6))
+    dispatch(setTheNotifications({message: `you voted! ${anecdote.content}`}, 2))
   }
 
     const showAnecdotes = filterAnecdotes
