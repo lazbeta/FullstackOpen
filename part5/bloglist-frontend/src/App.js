@@ -17,11 +17,7 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    blogService
-      .getAll()
-      .then(blogs =>
-        setBlogs(blogs)
-      )
+    blogService.getAll().then((blogs) => setBlogs(blogs))
   }, [])
 
   useEffect(() => {
@@ -38,20 +34,16 @@ const App = () => {
 
     try {
       const user = await loginService.login({
-        username, password
+        username,
+        password,
       })
       setUser(user)
       blogService.setToken(user.token)
-      window.localStorage.setItem(
-        'loggedBlogeappUser', JSON.stringify(user)
-      )
+      window.localStorage.setItem('loggedBlogeappUser', JSON.stringify(user))
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setShowMessage(<div className='error'>
-            wrong credentials
-      </div>
-      )
+      setShowMessage(<div className="error">wrong credentials</div>)
       setTimeout(() => {
         setShowMessage(null)
       }, 5000)
@@ -59,7 +51,7 @@ const App = () => {
   }
 
   const loginForm = () => {
-    return(
+    return (
       <div>
         <LoginForm
           username={username}
@@ -74,51 +66,44 @@ const App = () => {
 
   const addBlog = (newBlog) => {
     blogFormRef.current.toggleVisibility()
-    blogService
-      .create(newBlog)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-        setShowMessage(
-          <div className='notification'>
-            {newBlog.title} has been added to the bloglist
-          </div>
-        )
-        setTimeout(() => {
-          setShowMessage(null)
-        }, 5000)
-      })
+    blogService.create(newBlog).then((returnedBlog) => {
+      setBlogs(blogs.concat(returnedBlog))
+      setShowMessage(
+        <div className="notification">
+          {newBlog.title} has been added to the bloglist
+        </div>
+      )
+      setTimeout(() => {
+        setShowMessage(null)
+      }, 5000)
+    })
   }
 
   const blogForm = () => {
     return (
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog}/>
+        <BlogForm createBlog={addBlog} />
       </Togglable>
     )
   }
 
   const updateBlogsAfterDeletion = () => {
-    blogService
-      .getAll()
-      .then(blogs => {
-        let newBlogList = [...blogs]
-        setBlogs(newBlogList)
-        setShowMessage(
-          <div className='notification'>
-            blog has been deleted
-          </div>
-        )
-        setTimeout(() => {
-          setShowMessage(null)
-        }, 5000)
-      })
+    blogService.getAll().then((blogs) => {
+      let newBlogList = [...blogs]
+      setBlogs(newBlogList)
+      setShowMessage(<div className="notification">blog has been deleted</div>)
+      setTimeout(() => {
+        setShowMessage(null)
+      }, 5000)
+    })
   }
 
-
-  const handleLikes = blog => {
+  const handleLikes = (blog) => {
     const updatingLikes = { ...blog, likes: blog.likes }
-    blogService.updateLikes(blog.id, updatingLikes)
-      .then(() => blogService.getAll()).then(blogs => setBlogs(blogs))
+    blogService
+      .updateLikes(blog.id, updatingLikes)
+      .then(() => blogService.getAll())
+      .then((blogs) => setBlogs(blogs))
   }
 
   const logout = () => {
@@ -131,27 +116,34 @@ const App = () => {
   return (
     <>
       <h2>blogs</h2>
-      <Notification message={showMessage}/>
-      {
-        user === null ?
-          loginForm() :
-          <div>
-            <p>{user.name} is logged-in</p>
-            <button onClick={logout} type="submit">logout</button>
+      <Notification message={showMessage} />
+      {user === null ? (
+        loginForm()
+      ) : (
+        <div>
+          <p>{user.name} is logged-in</p>
+          <button onClick={logout} type="submit">
+            logout
+          </button>
 
-            <h2>create new</h2>
-            {blogForm()}
-            <br/>
-            <h2>blogs</h2>
-            <div>
-              {
-                blogs
-                  .sort((a, b) => b.likes - a.likes)
-                  .map(blog => <Blog key={blog.id} blog={blog} updateLikes={handleLikes} update={updateBlogsAfterDeletion}/>)
-              }
-            </div>
+          <h2>create new</h2>
+          {blogForm()}
+          <br />
+          <h2>blogs</h2>
+          <div>
+            {blogs
+              .sort((a, b) => b.likes - a.likes)
+              .map((blog) => (
+                <Blog
+                  key={blog.id}
+                  blog={blog}
+                  updateLikes={handleLikes}
+                  update={updateBlogsAfterDeletion}
+                />
+              ))}
           </div>
-      }
+        </div>
+      )}
     </>
   )
 }

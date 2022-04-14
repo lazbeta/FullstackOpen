@@ -8,12 +8,9 @@ import BlogForm from './BlogForm'
 describe('<Blog />', () => {
   let container
 
-  beforeEach( () => {
-    container = render (
-      <Blog
-        blog={blog}
-        updateLikes={likeHandler}
-      />,
+  beforeEach(() => {
+    container = render(
+      <Blog blog={blog} updateLikes={likeHandler} />
     ).container
   })
 
@@ -23,17 +20,15 @@ describe('<Blog />', () => {
     author: 'autor',
     title: 'title',
     url: 'url',
-    likes: 1
+    likes: 1,
   }
 
   test('renders only author and title', () => {
-
     const div = container.querySelector('.blog')
     expect(div).toHaveTextContent(`${blog.author}`, `${blog.title}`)
   })
 
   test('clicking this button shows url and number of likes', () => {
-
     const button = container.querySelector('.showDetails')
     userEvent.click(button)
 
@@ -41,8 +36,7 @@ describe('<Blog />', () => {
     expect(div).toHaveTextContent(`${blog.url}`, `${blog.likes}`)
   })
 
-  test('like', async() => {
-
+  test('like', async () => {
     const button = await container.querySelector('.like')
 
     userEvent.click(button)
@@ -54,7 +48,7 @@ describe('<Blog />', () => {
   test('create new blog', () => {
     const createBlog = jest.fn()
 
-    render(<BlogForm createBlog={createBlog}/>)
+    render(<BlogForm createBlog={createBlog} />)
 
     const input1 = screen.getByPlaceholderText('author')
     const input2 = screen.getByPlaceholderText('title')
@@ -62,18 +56,15 @@ describe('<Blog />', () => {
 
     const sendButton = screen.getByText('save')
 
-    userEvent.type(input1, 'Jane Doe' )
-    userEvent.type(input2, 'John Does' )
-    userEvent.type(input3, 'www.does.com' )
+    userEvent.type(input1, 'Jane Doe')
+    userEvent.type(input2, 'John Does')
+    userEvent.type(input3, 'www.does.com')
 
     userEvent.click(sendButton)
 
     expect(createBlog.mock.calls).toHaveLength(1)
-    expect(createBlog.mock.calls[0][0].author).toBe( 'Jane Doe' )
-    expect(createBlog.mock.calls[0][0].title).toBe( 'John Does' )
-    expect(createBlog.mock.calls[0][0].url).toBe( 'www.does.com' )
-
+    expect(createBlog.mock.calls[0][0].author).toBe('Jane Doe')
+    expect(createBlog.mock.calls[0][0].title).toBe('John Does')
+    expect(createBlog.mock.calls[0][0].url).toBe('www.does.com')
   })
-
-
 })
