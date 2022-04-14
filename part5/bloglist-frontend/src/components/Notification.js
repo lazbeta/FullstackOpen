@@ -5,11 +5,7 @@ const Notification = ({ message }) => {
     return null
   }
 
-  return (
-    <div>
-      {message}
-    </div>
-  )
+  return <div>{message}</div>
 }
 
 export default Notification
