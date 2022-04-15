@@ -1,18 +1,27 @@
 import React from 'react'
 import { useState } from 'react'
-import blogService from '../../src/services/blogs'
+import { useDispatch } from 'react-redux'
+import { deleteThisBlog, initializeBlogs, likedBlog } from '../reducers/blogsReducer'
+import { setTheNotifications } from '../reducers/notificationReducer'
 
-const Blog = ({ update, blog, updateLikes }) => {
+const Blog = ({ blog }) => {
   const [visibleBlogDetails, setVisibleBlogDetails] = useState(false)
 
   const hideWhenVisible = { display: visibleBlogDetails ? 'none' : '' }
   const showWhenVisible = { display: visibleBlogDetails ? '' : 'none' }
 
+  const dispatch = useDispatch()
+
   const addLikes = () => {
-    updateLikes({
-      ...blog,
-      likes: blog.likes + 1,
-    })
+    dispatch(likedBlog(blog.id, { ...blog, likes: blog.likes + 1 }))
+  }
+
+  const handleDelete = async () => {
+    window.confirm(`Do you want to delete ${blog.title} by ${blog.author}`) &&
+    await dispatch(deleteThisBlog(blog.id))
+    const message = 'a blog has been deleted'
+    await dispatch(setTheNotifications(message, 5))
+    await dispatch(initializeBlogs())
   }
 
   const blogStyle = {
@@ -21,13 +30,6 @@ const Blog = ({ update, blog, updateLikes }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  }
-
-  const handleDelete = () => {
-    window.confirm(`Do you want to delete ${blog.title} by ${blog.author}`) &&
-      blogService.deleteBlog(blog.id).then(() => {
-        update()
-      })
   }
 
   return (
@@ -48,7 +50,7 @@ const Blog = ({ update, blog, updateLikes }) => {
         blog url: {blog.url}
         <br />
         likes: {blog.likes}
-        <button className="like" onClick={addLikes}>
+        <button className="like" onClick={() => addLikes()}>
           like
         </button>
         <br />

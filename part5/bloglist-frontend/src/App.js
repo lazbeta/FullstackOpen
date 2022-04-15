@@ -1,25 +1,41 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+//services
 import blogService from './services/blogs'
 import loginService from './services/login'
-import Blog from './components/Blog'
+//reducer
+import { initializeBlogs } from './reducers/blogsReducer'
+import { setTheNotifications } from './reducers/notificationReducer'
+//components
+import Blogs from './components/Blogs'
+import Users from './components/Users'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+//react router
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from 'react-router-dom'
+//css
 import './index.css'
 
+
 const App = () => {
-  const [blogs, setBlogs] = useState([])
-  const [showMessage, setShowMessage] = useState(null)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
-  }, [])
+  const dispatch = useDispatch()
 
+  //useeffect for diplaying all blogs
+  useEffect(() => {
+    dispatch(initializeBlogs())
+  }, [dispatch])
+
+  //useEffect for loggining in
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
@@ -31,7 +47,6 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-
     try {
       const user = await loginService.login({
         username,
@@ -43,10 +58,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setShowMessage(<div className="error">wrong credentials</div>)
-      setTimeout(() => {
-        setShowMessage(null)
-      }, 5000)
+      dispatch(setTheNotifications({ message:'wrong credentials' }, 5 ))
     }
   }
 
@@ -64,46 +76,13 @@ const App = () => {
     )
   }
 
-  const addBlog = (newBlog) => {
-    blogFormRef.current.toggleVisibility()
-    blogService.create(newBlog).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog))
-      setShowMessage(
-        <div className="notification">
-          {newBlog.title} has been added to the bloglist
-        </div>
-      )
-      setTimeout(() => {
-        setShowMessage(null)
-      }, 5000)
-    })
-  }
 
   const blogForm = () => {
     return (
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog} />
+        <BlogForm/>
       </Togglable>
     )
-  }
-
-  const updateBlogsAfterDeletion = () => {
-    blogService.getAll().then((blogs) => {
-      let newBlogList = [...blogs]
-      setBlogs(newBlogList)
-      setShowMessage(<div className="notification">blog has been deleted</div>)
-      setTimeout(() => {
-        setShowMessage(null)
-      }, 5000)
-    })
-  }
-
-  const handleLikes = (blog) => {
-    const updatingLikes = { ...blog, likes: blog.likes }
-    blogService
-      .updateLikes(blog.id, updatingLikes)
-      .then(() => blogService.getAll())
-      .then((blogs) => setBlogs(blogs))
   }
 
   const logout = () => {
@@ -115,32 +94,32 @@ const App = () => {
 
   return (
     <>
-      <h2>blogs</h2>
-      <Notification message={showMessage} />
+
+      <Notification />
+
       {user === null ? (
         loginForm()
       ) : (
         <div>
-          <p>{user.name} is logged-in</p>
-          <button onClick={logout} type="submit">
-            logout
-          </button>
-
-          <h2>create new</h2>
-          {blogForm()}
-          <br />
-          <h2>blogs</h2>
           <div>
-            {blogs
-              .sort((a, b) => b.likes - a.likes)
-              .map((blog) => (
-                <Blog
-                  key={blog.id}
-                  blog={blog}
-                  updateLikes={handleLikes}
-                  update={updateBlogsAfterDeletion}
-                />
-              ))}
+            <p>{user.name} is logged-in</p>
+            <button onClick={logout} type="submit">
+            logout
+            </button>
+
+            <Router>
+              <div>
+                <Link to="/blogs">blogs</Link>
+                <Link to="/users">users</Link>
+              </div>
+
+              <Routes>
+                <Route path="/blogs" element={<Blogs blogForm={blogForm}/>} />
+                <Route path="/users" element={<Users />} />
+              </Routes>
+            </Router>
+          </div>
+          <div>
           </div>
         </div>
       )}
