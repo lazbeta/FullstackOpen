@@ -7,9 +7,13 @@ import loginService from './services/login'
 //reducer
 import { initializeBlogs } from './reducers/blogsReducer'
 import { setTheNotifications } from './reducers/notificationReducer'
+import { allUsers } from './reducers/userReducer'
 //components
 import Blogs from './components/Blogs'
+import Blog from './components/Blog'
+import User from './components/User'
 import Users from './components/Users'
+import Home from './components/Home'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
@@ -45,6 +49,11 @@ const App = () => {
     }
   }, [])
 
+  //useeffect for displaying users
+  useEffect(() => {
+    dispatch(allUsers())
+  }, [dispatch])
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -65,6 +74,7 @@ const App = () => {
   const loginForm = () => {
     return (
       <div>
+        <h2>Blogs</h2>
         <LoginForm
           username={username}
           password={password}
@@ -75,7 +85,6 @@ const App = () => {
       </div>
     )
   }
-
 
   const blogForm = () => {
     return (
@@ -106,23 +115,27 @@ const App = () => {
             <button onClick={logout} type="submit">
             logout
             </button>
-
             <Router>
               <div>
+                <Link to="/">home</Link>
                 <Link to="/blogs">blogs</Link>
                 <Link to="/users">users</Link>
               </div>
 
               <Routes>
+                <Route path="/blogs/:id" element={<Blog/>} />
+                <Route path="/users/:id" element={<User/>} />
+                <Route path="/" element={<Home />} />
                 <Route path="/blogs" element={<Blogs blogForm={blogForm}/>} />
                 <Route path="/users" element={<Users />} />
               </Routes>
             </Router>
           </div>
-          <div>
-          </div>
         </div>
       )}
+      <footer>
+        <p>bloglist app 2022</p>
+      </footer>
     </>
   )
 }

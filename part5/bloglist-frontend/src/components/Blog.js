@@ -1,16 +1,22 @@
 import React from 'react'
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+//import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteThisBlog, initializeBlogs, likedBlog } from '../reducers/blogsReducer'
 import { setTheNotifications } from '../reducers/notificationReducer'
+//import { Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-const Blog = ({ blog }) => {
-  const [visibleBlogDetails, setVisibleBlogDetails] = useState(false)
+const Blog = () => {
+  //const [visibleBlogDetails, setVisibleBlogDetails] = useState(false)
 
-  const hideWhenVisible = { display: visibleBlogDetails ? 'none' : '' }
-  const showWhenVisible = { display: visibleBlogDetails ? '' : 'none' }
+  //const hideWhenVisible = { display: visibleBlogDetails ? 'none' : '' }
+  //const showWhenVisible = { display: visibleBlogDetails ? '' : 'none' }
 
   const dispatch = useDispatch()
+
+  const { id } = useParams()
+  const blogs = useSelector(state => state.blogs)
+  const blog = blogs.find(b => id === b.id)
 
   const addLikes = () => {
     dispatch(likedBlog(blog.id, { ...blog, likes: blog.likes + 1 }))
@@ -24,29 +30,16 @@ const Blog = ({ blog }) => {
     await dispatch(initializeBlogs())
   }
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
+
+
 
   return (
-    <div className="blogs" style={blogStyle}>
+    <div className="blogs">
       <div className="blog">
-        {blog.title}, {blog.author}
-        <div style={hideWhenVisible}>
-          <button
-            onClick={() => setVisibleBlogDetails(true)}
-            className="showDetails"
-          >
-            show details
-          </button>
-        </div>
+        <h3>{blog.title}, {blog.author}</h3>
       </div>
 
-      <div style={showWhenVisible} className="showUrlAndLikes">
+      <div>
         blog url: {blog.url}
         <br />
         likes: {blog.likes}
@@ -58,9 +51,6 @@ const Blog = ({ blog }) => {
         <br />
         <button onClick={handleDelete}>delete</button>
         <br />
-        <button onClick={() => setVisibleBlogDetails(false)}>
-          hide details
-        </button>
       </div>
     </div>
   )
