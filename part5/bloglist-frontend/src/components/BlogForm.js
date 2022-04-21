@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux'
-import { createNewBlog } from '../reducers/blogsReducer'
+import { createNewBlog, initializeBlogs } from '../reducers/blogsReducer'
 import { setTheNotifications } from '../reducers/notificationReducer'
+import { allUsers } from '../reducers/userReducer'
 
 const BlogForm = () => {
 
@@ -18,9 +19,11 @@ const BlogForm = () => {
     const url = event.target.url.value
     event.target.url.value = ''
 
-    dispatch(createNewBlog( author, title, url ))
+    await dispatch(createNewBlog( author, title, url ))
+    await dispatch(initializeBlogs())
+    await dispatch(allUsers())
     const message = `new blog has been added! ${author}, ${title}`
-    dispatch(setTheNotifications(message, 5))
+    await dispatch(setTheNotifications(message, 5))
   }
 
   return (

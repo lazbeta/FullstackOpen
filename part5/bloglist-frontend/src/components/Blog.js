@@ -1,18 +1,13 @@
 import React from 'react'
-//import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteThisBlog, initializeBlogs, likedBlog } from '../reducers/blogsReducer'
+import { deleteThisBlog, initializeBlogs, likedBlog, commentedBlog } from '../reducers/blogsReducer'
 import { setTheNotifications } from '../reducers/notificationReducer'
-//import { Link } from 'react-router-dom'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 const Blog = () => {
-  //const [visibleBlogDetails, setVisibleBlogDetails] = useState(false)
-
-  //const hideWhenVisible = { display: visibleBlogDetails ? 'none' : '' }
-  //const showWhenVisible = { display: visibleBlogDetails ? '' : 'none' }
 
   const dispatch = useDispatch()
+  let navigate = useNavigate()
 
   const { id } = useParams()
   const blogs = useSelector(state => state.blogs)
@@ -23,15 +18,36 @@ const Blog = () => {
   }
 
   const handleDelete = async () => {
-    window.confirm(`Do you want to delete ${blog.title} by ${blog.author}`) &&
+    window.confirm(`Do you want to delete ${blog.title} by ${blog.author}`)
+    &&
     await dispatch(deleteThisBlog(blog.id))
+    await navigate('/blogs')
+    await dispatch(initializeBlogs())
     const message = 'a blog has been deleted'
     await dispatch(setTheNotifications(message, 5))
+  }
+
+  const addComments = async (event) => {
+    event.preventDefault()
+    const text = event.target.text.value
+    event.target.text.value = ''
+
+    await dispatch(commentedBlog(blog.id, text))
     await dispatch(initializeBlogs())
   }
 
+  const comments1 =  Object.fromEntries(Object
+    .entries(blog.comment)
+    .map(([key, { text }]) => [key, text])
+  )
 
+  const comments = Object.values(comments1).map((item, index) => {
+    return <li key={index}>{item}</li>
+  })
 
+  if(!blog) {
+    return null
+  }
 
   return (
     <div className="blogs">
@@ -51,6 +67,18 @@ const Blog = () => {
         <br />
         <button onClick={handleDelete}>delete</button>
         <br />
+      </div>
+      <div>
+        <h3>Comments</h3>
+        <form onSubmit={addComments}>
+          <input
+            name='text'
+            placeholder='Comment here'/>
+          <button id="save-button" type="submit">
+           save
+          </button>
+        </form>
+        {comments}
       </div>
     </div>
   )

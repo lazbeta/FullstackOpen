@@ -3,15 +3,15 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsenUxIiwiaWQiOiI2MjJiNTRmNGVhODZmNDIyOGNlNjcyNTciLCJpYXQiOjE2NDcwMDcwMDl9.bTyeUZmUNamOjB92BzrIxrqw33PAVg7HHGh699iqDGc
 
 {
-  "title": "This Is You",
-  "author": "Jan Hel",
-  "url": "http://janhel.com/blogs/jan/96",
-  "likes": "31"
+  "title": "commment test",
+  "author": "test Hel",
+  "url": "http://testest.com",
+  "likes": "9000"
 }
 
 ###
 
-GET http://localhost:3003/api/blogs
+GET http://localhost:3003/api/blogs/625c265c9beecd71a40642cf
 Content-Type: application/json
 
 
@@ -41,9 +41,10 @@ Content-Type: application/json
   }
 
 ###
-PUT http://localhost:3003/api/blogs/622b57557257ffd2c31038d9
+POST   http://localhost:3003/api/blogs/625d3d6feda462a6ad303e87/comments
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFsenUxIiwiaWQiOiI2MjJiNTRmNGVhODZmNDIyOGNlNjcyNTciLCJpYXQiOjE2NDczMzEyOTJ9.CU2KY0CfjrS8aayAIeGEQPRzzTpo2uk-ThKlovCWu7o
 
 {
-  "likes": 99
+  "text": "second commment is here"
 }
