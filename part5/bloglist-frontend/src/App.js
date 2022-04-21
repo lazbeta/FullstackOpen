@@ -99,29 +99,33 @@ const App = () => {
     window.location.href = '/'
   }
 
+
   const blogFormRef = useRef()
+
+  const style = {
+    padding: 10,
+    backgroundColor: 'green'
+  }
 
   return (
     <>
-
-      <Notification />
-
       {user === null ? (
         loginForm()
       ) : (
         <div>
           <div>
-            <p>{user.name} is logged-in</p>
-            <button onClick={logout} type="submit">
-            logout
-            </button>
             <Router>
-              <div>
-                <Link to="/">home</Link>
-                <Link to="/blogs">blogs</Link>
-                <Link to="/users">users</Link>
-              </div>
+              <span style={style}>
 
+                <Link style={style} to="/">home</Link>
+                <Link style={style} to="/blogs">blogs</Link>
+                <Link style={style} to="/users">users</Link>
+                {user.name} is logged-in
+                <button onClick={logout} type="submit">
+                  logout
+                </button>
+              </span>
+              <Notification />
               <Routes>
                 <Route path="/blogs/:id" element={<Blog/>} />
                 <Route path="/users/:id" element={<User/>} />

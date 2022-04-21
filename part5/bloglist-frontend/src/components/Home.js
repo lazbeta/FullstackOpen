@@ -2,7 +2,7 @@ import React from 'react'
 
 const Home = () => (
   <>
-    <p>Blog list app</p>
+    <h1>Blog list app</h1>
   </>
 )
 
