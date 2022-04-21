@@ -23,6 +23,8 @@ const User = () => {
     </div>
   }
 
+  console.log(result2)
+
   return (
     <div>
       <h2>{user.name}</h2>
