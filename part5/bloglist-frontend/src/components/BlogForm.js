@@ -2,6 +2,8 @@ import { useDispatch } from 'react-redux'
 import { createNewBlog, initializeBlogs } from '../reducers/blogsReducer'
 import { setTheNotifications } from '../reducers/notificationReducer'
 import { allUsers } from '../reducers/userReducer'
+//css mui
+import { TextField, Button } from '@mui/material'
 
 const BlogForm = () => {
 
@@ -28,27 +30,54 @@ const BlogForm = () => {
 
   return (
     <form onSubmit={addBlog}>
-      <input
-        name='title'
-        id="title"
-        placeholder="title"
-      />
-      <br />
-      <input
-        name='author'
-        id="author"
-        placeholder="author"
-      />
-      <br />
-      <input
-        name='url'
-        id="url"
-        placeholder="url"
-      />
-      <br />
-      <button id="save-button" type="submit">
-        save
-      </button>
+      <div>
+        <TextField
+          name='title'
+          id="title"
+          placeholder="title"
+          sx={{
+            padding: 1,
+          }}
+        />
+      </div>
+      <div>
+        <TextField
+          name='author'
+          id="author"
+          placeholder="author"
+          sx={{
+            padding: 1,
+          }}
+        />
+      </div>
+      <div>
+        <TextField
+          name='url'
+          id="url"
+          placeholder="url"
+          sx={{
+            padding: 1,
+          }}
+        />
+      </div>
+      <div className="login-button-div">
+        <Button id="save-button" type="submit"
+          sx={{
+            width: 100,
+            background: '#0BB596',
+            boxShadow: 2,
+            borderRadius: 3,
+            color: 'white',
+            fontSize: 15,
+            letterSpacing: '0.05em',
+            '&:hover': {
+              backgroundColor: '#A9A9A9',
+              color: 'white',
+            }
+          }}>
+            save
+        </Button>
+      </div>
     </form>
   )
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, forwardRef, useImperativeHandle } from 'react'
-import propTypes from 'prop-types'
+//css mui
+import { Button } from '@mui/material'
 
 const Togglable = forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false)
@@ -21,20 +22,54 @@ const Togglable = forwardRef((props, ref) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <div className="addNew-button-div">
+          <Button type="submit"
+            onClick={toggleVisibility}
+            sx={{
+              width: 170,
+              padding: 2,
+              background: '#0BB596',
+              boxShadow: 2,
+              borderRadius: 3,
+              color: 'white',
+              fontSize: 15,
+              letterSpacing: '0.05em',
+              '&:hover': {
+                backgroundColor: '#A9A9A9',
+                color: 'white',
+              }
+            }}>
+            <b>Add New Blog</b>
+          </Button>
+        </div>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <div className="addNew-button-div">
+          <Button id="cancel-button" type="submit"
+            onClick={toggleVisibility}
+            sx={{
+              width: 100,
+              background: '#0BB596',
+              boxShadow: 2,
+              borderRadius: 3,
+              color: 'white',
+              fontSize: 15,
+              letterSpacing: '0.05em',
+              '&:hover': {
+                backgroundColor: '#A9A9A9',
+                color: 'white',
+              }
+            }}>
+            cancel
+          </Button>
+        </div>
       </div>
     </div>
+
   )
 })
 
 Togglable.displayName = 'Togglable'
-
-Togglable.propTypes = {
-  buttonLabel: propTypes.string.isRequired,
-}
 
 export default Togglable

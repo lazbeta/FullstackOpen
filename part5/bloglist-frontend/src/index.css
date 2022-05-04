@@ -17,3 +17,24 @@
   padding: 10px;
   margin-bottom: 10px;
 }
+
+h2, h1 {
+  color: #FF7A00;
+  font-family: Shrikhand;
+  font-size: 44px;
+  font-style: italic;
+  font-weight: bold;
+  text-decoration: underline;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.login-button-div {
+  text-align: center;
+  padding-top: 25px;
+}
+
+.addNew-button-div {
+  text-align: center;
+  padding-top: 5px;
+}
