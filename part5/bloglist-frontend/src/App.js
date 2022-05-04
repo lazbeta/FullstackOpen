@@ -25,6 +25,8 @@ import {
 } from 'react-router-dom'
 //css
 import './index.css'
+import { Container, AppBar, Box, Toolbar, IconButton, Typography, Menu, Avatar, Button, Tooltip, MenuItem, Grid } from '@mui/material'
+import { Menu as MenuIcon } from '@material-ui/icons'
 
 
 const App = () => {
@@ -73,59 +75,176 @@ const App = () => {
 
   const loginForm = () => {
     return (
-      <div>
-        <h2>Blogs</h2>
-        <LoginForm
-          username={username}
-          password={password}
-          handlePasswordChange={({ target }) => setPassword(target.value)}
-          handleUsernameChange={({ target }) => setUsername(target.value)}
-          handleSubmit={handleLogin}
-        />
-      </div>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: '100vh' }}>
+        <Grid item xs={3} >
+          <LoginForm
+            username={username}
+            password={password}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handleSubmit={handleLogin}
+          />
+        </Grid>
+      </Grid>
+
     )
   }
 
-  const blogForm = () => {
-    return (
-      <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        <BlogForm/>
-      </Togglable>
-    )
-  }
+  const blogForm = () => (
+    <Container>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: '100vh' }}>
+        <Grid item xs={3} >
+          <Togglable ref={blogFormRef}>
+            <BlogForm />
+          </Togglable>
+        </Grid>
+      </Grid>
+    </Container>
+  )
 
   const logout = () => {
     localStorage.clear()
     window.location.href = '/'
   }
 
+  const [anchorElNav, setAnchorElNav] = React.useState(null)
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget)
+  }
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null)
+  }
 
   const blogFormRef = useRef()
 
   const style = {
-    padding: 10,
-    backgroundColor: 'green'
+    padding: 10
   }
 
   return (
-    <>
+
+    <Container maxWidth="xl">
       {user === null ? (
         loginForm()
       ) : (
         <div>
           <div>
             <Router>
-              <span style={style}>
+              <AppBar position="static">
+                <Toolbar disableGutters>
+                  <Typography
+                    variant="h6"
+                    noWrap
+                    component="div"
+                    sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                  >
+                    BLOGLISTAPP
+                  </Typography>
+                  <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                    <IconButton
+                      size="large"
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      onClick={handleOpenNavMenu}
+                      color="inherit"
+                    >
+                      <MenuIcon />
+                    </IconButton>
+                    <Menu
+                      id="menu-appbar"
+                      anchorEl={anchorElNav}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                      open={Boolean(anchorElNav)}
+                      onClose={handleCloseNavMenu}
+                      sx={{
+                        display: { xs: 'block', md: 'none' },
+                      }}
+                    >
 
-                <Link style={style} to="/">home</Link>
-                <Link style={style} to="/blogs">blogs</Link>
-                <Link style={style} to="/users">users</Link>
-                {user.name} is logged-in
-                <button onClick={logout} type="submit">
-                  logout
-                </button>
-              </span>
+                      <MenuItem onClick={handleCloseNavMenu}>
+                        <Typography textAlign="center">
+                          <Link to="/">home</Link>
+                        </Typography>
+                      </MenuItem>
+
+                      <MenuItem onClick={handleCloseNavMenu}>
+                        <Typography textAlign="center">
+                          <Link to="/blogs">blogs</Link>
+                        </Typography>
+                      </MenuItem>
+
+                      <MenuItem onClick={handleCloseNavMenu}>
+                        <Typography textAlign="center">
+                          <Link to="/users">users</Link>
+                        </Typography>
+                      </MenuItem>
+                    </Menu>
+                  </Box>
+                  <Typography
+                    variant="h6"
+                    noWrap
+                    component="div"
+                    sx={{ flexGrow: 1 , display: { xs: 'flex', md: 'none' } }}
+                  >
+                    BLOGLISTAPP
+                  </Typography>
+                  <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      <Link to="/">home</Link>
+                    </Button>
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      <Link to="/blogs">blogs</Link>
+                    </Button>
+
+                    <Button
+                      onClick={handleCloseNavMenu}
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      <Link to="/users">users</Link>
+                    </Button>
+                  </Box>
+
+
+                  <Box m={1} sx={{ flexGrow: 0 }}>
+                    <Button color="inherit" variant="outlined" onClick={logout} type="submit">
+                       logout
+                    </Button>
+                  </Box>
+
+                </Toolbar>
+              </AppBar>
+
               <Notification />
+
               <Routes>
                 <Route path="/blogs/:id" element={<Blog/>} />
                 <Route path="/users/:id" element={<User/>} />
@@ -137,11 +256,22 @@ const App = () => {
           </div>
         </div>
       )}
-      <footer>
-        <p>bloglist app 2022</p>
-      </footer>
-    </>
+    </Container>
   )
 }
 
 export default App
+
+/*
+                  <Button color="inherit">
+                    <Link to="/blogs">blogs</Link>
+                  </Button>
+                  <Button color="inherit">
+                    <Link to="/users">users</Link>
+                  </Button>
+                  <Button color="inherit" onClick={logout} type="submit">
+                  logout
+                  </Button>
+                  <MenuItem  color="inherit">
+                    {user.name} is logged-in
+                  </MenuItem>*/
