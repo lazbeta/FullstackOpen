@@ -1,27 +1,43 @@
-.notification {
-  color: green;
-  background: lightgrey;
-  font-size: 20px;
-  border-style: solid;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
+h2, h1 {
+  
+  color: #FF7A00;
+  font-family: "arial", san-serif;
+  font-size: 44px;
+  font-style: italic;
+  font-weight: bold;
+  text-decoration: underline;
+  letter-spacing: 0.01em;
+  text-align: center;
 }
 
-.error {
-  color: red;
-  background: lightgrey;
-  font-size: 20px;
-  border-style: solid;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
+@media only screen and (max-width: 600px){
 h2, h1 {
   color: #FF7A00;
-  font-family: Shrikhand;
-  font-size: 44px;
+  font-family: "arial", san-serif;
+  font-size: 40px;
+  font-style: italic;
+  font-weight: bold;
+  text-decoration: underline;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+}
+
+h3 {
+  color: #FF7A00;
+  font-family: "arial", san-serif;
+  font-size: 34px;
+  font-style: italic;
+  font-weight: bold;
+  text-decoration: underline;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+h4 {
+  color: black;
+  font-family: "arial", san-serif;
+  font-size: 34px;
   font-style: italic;
   font-weight: bold;
   text-decoration: underline;
@@ -37,4 +53,66 @@ h2, h1 {
 .addNew-button-div {
   text-align: center;
   padding-top: 5px;
+}
+
+.hovermenu:hover{
+  font-family: "arial", san-serif;
+  font-size:25px;
+  font-style: italic;
+  display:inline-block;
+  border-bottom: 11px solid #50D3CB;
+  line-height: 0.3;
+  text-decoration: none;
+}
+
+.hovermenu {
+  font-family: "arial", san-serif;
+  font-size:25px;
+  font-style: italic;
+  line-height: 0.3;
+  display:inline-block;
+  text-decoration: underline;
+}
+
+.hovermenuMobile:hover{
+  font-family: "arial", san-serif;
+  font-size:20px;
+  font-style: italic;
+  display:inline-block;
+  border-bottom: 11px solid #50D3CB;
+  line-height: 0.3;
+  text-decoration: none;
+}
+
+.hovermenuMobile {
+  font-family: "arial", san-serif;
+  font-size:20px;
+  font-style: italic;
+  line-height: 0.3;
+  display:inline-block;
+  text-decoration: underline;
+}
+
+form {
+  text-align: center;
+}
+
+#blogForm {
+  padding-top: 33px;
+}
+
+.link {
+  font-family: "arial", san-serif;
+  line-height: 0.3;
+  color:black;
+  font-size:15px;
+  text-decoration: underline;
+}
+.link:hover {
+  font-family: "arial", san-serif;
+  font-size:15px;
+  color:black;
+  border-bottom: 11px solid #50D3CB;
+  line-height: 0.3;
+  text-decoration: none;
 }

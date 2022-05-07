@@ -22,31 +22,31 @@ const Togglable = forwardRef((props, ref) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <div className="addNew-button-div">
-          <Button type="submit"
-            onClick={toggleVisibility}
-            sx={{
-              width: 170,
-              padding: 2,
-              background: '#0BB596',
-              boxShadow: 2,
-              borderRadius: 3,
+
+        <Button type="submit"
+          size="large"
+          onClick={toggleVisibility}
+          sx={{
+            padding: 2,
+            background: '#0BB596',
+            boxShadow: 2,
+            borderRadius: 3,
+            color: 'white',
+            letterSpacing: '0.05em',
+            '&:hover': {
+              backgroundColor: '#A9A9A9',
               color: 'white',
-              fontSize: 15,
-              letterSpacing: '0.05em',
-              '&:hover': {
-                backgroundColor: '#A9A9A9',
-                color: 'white',
-              }
-            }}>
-            <b>Add New Blog</b>
-          </Button>
-        </div>
+            }
+          }}>
+          <b>Add New Blog</b>
+        </Button>
+
       </div>
       <div style={showWhenVisible}>
         {props.children}
         <div className="addNew-button-div">
           <Button id="cancel-button" type="submit"
+            size="large"
             onClick={toggleVisibility}
             sx={{
               width: 100,
@@ -56,6 +56,7 @@ const Togglable = forwardRef((props, ref) => {
               color: 'white',
               fontSize: 15,
               letterSpacing: '0.05em',
+              marginTop: '15px',
               '&:hover': {
                 backgroundColor: '#A9A9A9',
                 color: 'white',
