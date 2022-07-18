@@ -1,6 +1,6 @@
 import React from 'react'
 import propTypes from 'prop-types'
-import { Button, TextField } from '@mui/material'
+import { Button, TextField, Typography } from '@mui/material'
 
 const LoginForm = ({
   handleSubmit,
@@ -12,7 +12,7 @@ const LoginForm = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2><i><u><b>BLOGLISTAPP</b></u></i></h2>
+      <Typography variant="div"><h2>BLOGLISTAPP</h2></Typography>
       <div>
         <TextField
           id="username"
@@ -20,7 +20,7 @@ const LoginForm = ({
           label="Username"
           onChange={handleUsernameChange}
           sx={{
-            width: 300,
+            minWidth: '30vw',
             padding: 1
           }}
         />
@@ -33,7 +33,7 @@ const LoginForm = ({
           label="Password"
           onChange={handlePasswordChange}
           sx={{
-            width: 300,
+            minWidth: '30vw',
             padding: 1,
           }}
         />
@@ -42,7 +42,7 @@ const LoginForm = ({
       <div className="login-button-div">
         <Button id="login-button" type="submit"
           sx={{
-            width: 300,
+            width: 280,
             padding: 2,
             background: '#0BB596',
             boxShadow: 2,

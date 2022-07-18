@@ -29,7 +29,7 @@ const BlogForm = () => {
   }
 
   return (
-    <form onSubmit={addBlog}>
+    <form id="blogForm" onSubmit={addBlog}>
       <div>
         <TextField
           name='title'
@@ -37,6 +37,7 @@ const BlogForm = () => {
           placeholder="title"
           sx={{
             padding: 1,
+            minWidth: '30vw'
           }}
         />
       </div>
@@ -47,6 +48,7 @@ const BlogForm = () => {
           placeholder="author"
           sx={{
             padding: 1,
+            minWidth: '30vw'
           }}
         />
       </div>
@@ -57,18 +59,18 @@ const BlogForm = () => {
           placeholder="url"
           sx={{
             padding: 1,
+            minWidth: '30vw'
           }}
         />
       </div>
       <div className="login-button-div">
         <Button id="save-button" type="submit"
+          size="large"
           sx={{
-            width: 100,
             background: '#0BB596',
             boxShadow: 2,
             borderRadius: 3,
             color: 'white',
-            fontSize: 15,
             letterSpacing: '0.05em',
             '&:hover': {
               backgroundColor: '#A9A9A9',

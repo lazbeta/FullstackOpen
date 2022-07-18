@@ -29,7 +29,7 @@ const Blogs = ({ blogForm }) => {
   }))
 
   return (
-    <div>
+    <>
       <h2>Blogs</h2>
       <TableContainer component={Paper}
         sx={{ width: '75%', margin: 'auto' }}>
@@ -38,7 +38,7 @@ const Blogs = ({ blogForm }) => {
             {blogs.map(blog => (
               <StyledTableRow key={blog.id}>
                 <StyledTableCell align="left">
-                  <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                  <Link className='link' to={`/blogs/${blog.id}`}>{blog.title}</Link>
                 </StyledTableCell>
                 <StyledTableCell align="left">
                   {blog.author}
@@ -52,7 +52,7 @@ const Blogs = ({ blogForm }) => {
         </Table>
       </TableContainer>
       {blogForm()}
-    </div>
+    </>
   )
 }
 

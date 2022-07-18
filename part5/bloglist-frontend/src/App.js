@@ -18,6 +18,7 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import StickyFooter from './components/Footer'
 //react router
 import {
   BrowserRouter as Router,
@@ -25,7 +26,7 @@ import {
 } from 'react-router-dom'
 //css
 import './index.css'
-import { Container, AppBar, Box, Toolbar, IconButton, Typography, Menu, Avatar, Button, Tooltip, MenuItem, Grid } from '@mui/material'
+import { Container, AppBar, Box, Toolbar, IconButton, Typography, Menu, Button, MenuItem, Grid, styled } from '@mui/material'
 import { Menu as MenuIcon } from '@material-ui/icons'
 
 
@@ -104,7 +105,7 @@ const App = () => {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        style={{ minHeight: '100vh' }}>
+        style={{ minHeight: '40vh' }}>
         <Grid item xs={3} >
           <Togglable ref={blogFormRef}>
             <BlogForm />
@@ -131,12 +132,7 @@ const App = () => {
 
   const blogFormRef = useRef()
 
-  const style = {
-    padding: 10
-  }
-
   return (
-
     <Container maxWidth="xl">
       {user === null ? (
         loginForm()
@@ -144,17 +140,11 @@ const App = () => {
         <div>
           <div>
             <Router>
-              <AppBar position="static">
+              <AppBar position="static"
+                sx={{ backgroundColor: 'transparent', boxShadow: 0 }}
+              >
                 <Toolbar disableGutters>
-                  <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
-                  >
-                    BLOGLISTAPP
-                  </Typography>
-                  <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                  <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none', color: 'black' } }}>
                     <IconButton
                       size="large"
                       aria-label="account of current user"
@@ -183,63 +173,65 @@ const App = () => {
                         display: { xs: 'block', md: 'none' },
                       }}
                     >
-
-                      <MenuItem onClick={handleCloseNavMenu}>
-                        <Typography textAlign="center">
-                          <Link to="/">home</Link>
-                        </Typography>
-                      </MenuItem>
-
-                      <MenuItem onClick={handleCloseNavMenu}>
-                        <Typography textAlign="center">
-                          <Link to="/blogs">blogs</Link>
-                        </Typography>
-                      </MenuItem>
-
-                      <MenuItem onClick={handleCloseNavMenu}>
-                        <Typography textAlign="center">
-                          <Link to="/users">users</Link>
-                        </Typography>
-                      </MenuItem>
+                      <MenuItem onClick={handleCloseNavMenu} component={Link} to={'/'}>Home</MenuItem>
+                      <MenuItem onClick={handleCloseNavMenu} component={Link} to={'/blogs'}>Blogs</MenuItem>
+                      <MenuItem onClick={handleCloseNavMenu} component={Link} to={'/users'}>Users</MenuItem>
+                      <hr/>
+                      <Button type="submit"
+                        onClick={logout}
+                        sx={{ color: 'white', background: '#A9A9A9', }}
+                      >Logout</Button>
                     </Menu>
                   </Box>
-                  <Typography
-                    variant="h6"
-                    noWrap
-                    component="div"
-                    sx={{ flexGrow: 1 , display: { xs: 'flex', md: 'none' } }}
-                  >
-                    BLOGLISTAPP
-                  </Typography>
-                  <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+
+                  <Box justifyContent="left" sx={{ paddingLeft: '44px', flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                     <Button
                       onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: 'white', display: 'block' }}
+                      sx={{ my: 2, color: 'black', display: 'block',   paddingRight: '25px' }}
+                      component={Link} to={'/'}
                     >
-                      <Link to="/">home</Link>
+                      <span className='hovermenu'>Home</span>
                     </Button>
                     <Button
                       onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: 'white', display: 'block' }}
+                      sx={{ my: 2, color: 'black', display: 'block',  paddingRight: '25px',  paddingLeft: '25px' }}
+                      component={Link} to={'/blogs'}
                     >
-                      <Link to="/blogs">blogs</Link>
+                      <span className='hovermenu'>Blogs</span>
                     </Button>
 
                     <Button
+                      className="menuButton"
                       onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: 'white', display: 'block' }}
+                      sx={{ my: 2, color: 'black', display: 'block', paddingLeft: '25px' }}
+                      component={Link} to={'/users'}
                     >
-                      <Link to="/users">users</Link>
+                      <span className='hovermenu'>Users</span>
                     </Button>
                   </Box>
 
 
-                  <Box m={1} sx={{ flexGrow: 0 }}>
-                    <Button color="inherit" variant="outlined" onClick={logout} type="submit">
+                  <Box m={1} sx={{ flexGrow: 0, display: { xs: 'none', md: 'flex' } }}>
+                    <Typography sx={{ color: 'black', paddingRight: '22px' }}><i>{user.name} </i>is logged-in</Typography>
+                    <Button
+                      size="medium"
+                      sx={{
+                        padding: 0.7,
+                        background: '#A9A9A9',
+                        boxShadow: 0.5,
+                        borderRadius: 3,
+                        color: 'white',
+                        fontSize: 12,
+                        letterSpacing: '0.09em',
+                        '&:hover': {
+                          color: 'black',
+                        }
+                      }}
+                      type="submit"
+                      onClick={logout}>
                        logout
                     </Button>
                   </Box>
-
                 </Toolbar>
               </AppBar>
 
@@ -256,22 +248,9 @@ const App = () => {
           </div>
         </div>
       )}
+      <StickyFooter/>
     </Container>
   )
 }
 
 export default App
-
-/*
-                  <Button color="inherit">
-                    <Link to="/blogs">blogs</Link>
-                  </Button>
-                  <Button color="inherit">
-                    <Link to="/users">users</Link>
-                  </Button>
-                  <Button color="inherit" onClick={logout} type="submit">
-                  logout
-                  </Button>
-                  <MenuItem  color="inherit">
-                    {user.name} is logged-in
-                  </MenuItem>*/
