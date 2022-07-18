@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "dateOfBirth":	"1944-07-22",   
+    "name":	"Zdena Studenkova",
+    "gender": "female",
+    "ssn": "212121-2121",
+    "occupation": "chef"
+}
