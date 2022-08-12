@@ -19,6 +19,12 @@ const getNonSensitivePatientInfo = (): NonSensitivePatientInfo[] => {
         }));
     };
 
+
+const getPatientById = (id: string) => {
+  const patient = patients.filter(p => p.id === id);
+  return patient;
+};
+
 const addNewPatient = (entry: NewPatientEntry): PatientEntry => {
   const newPatientEntry = {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -33,5 +39,6 @@ const addNewPatient = (entry: NewPatientEntry): PatientEntry => {
 export default {
   getPatientEntries,
   getNonSensitivePatientInfo,
+  getPatientById,
   addNewPatient
 };

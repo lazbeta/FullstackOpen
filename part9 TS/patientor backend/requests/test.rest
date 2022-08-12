@@ -8,3 +8,7 @@ Content-Type: application/json
     "ssn": "212121-2121",
     "occupation": "chef"
 }
+
+###
+GET http://localhost:3001/api/patients/d2773598-f723-11e9-8f0b-362b9e157777
+Content-Type: application/json
