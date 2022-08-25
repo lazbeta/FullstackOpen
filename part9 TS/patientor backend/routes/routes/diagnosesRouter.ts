@@ -9,7 +9,7 @@ router.get('/', (_req, res) => {
 });
 
 router.post('/', (_req, res) => {
-  res.send('Saving a new diagnoses!');
+  res.send('Saving a new diagnose!');
 });
 
 export default router;

@@ -20,8 +20,8 @@ export interface PatientEntry {
   entries: Entry[];
 }
 
-interface BaseEntry {
-  id: string;
+export interface BaseEntry {
+  id?: string;
   description: string;
   date: string;
   specialist: string;
@@ -40,17 +40,17 @@ interface HealthCheckEntry extends BaseEntry {
   healthCheckRating: HealthCheckRating;
 }
 
-interface Discharge {
+export interface Discharge {
   date: string;
   criteria: string;
-}
+} 
 
 interface HospitalEntry extends BaseEntry {
   type: "Hospital";
   discharge: Discharge;
 }
 
-interface SickLeave {
+export interface SickLeave {
   startDate: string;
   endDate: string;
 }
@@ -67,4 +67,7 @@ export type Entry =
   | HealthCheckEntry;
 
 export type NonSensitivePatientInfo = Omit<PatientEntry, 'ssn' | 'entries'>;
+
 export type NewPatientEntry = Omit<PatientEntry, 'id'>;
+
+export type NewEntryForPatient = Exclude<Entry,'id'>;
