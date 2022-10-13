@@ -6,18 +6,17 @@ import { useStateValue } from "../state";
 import { useParams } from "react-router-dom";
 import { apiBaseUrl } from "../constants";
 import { displayOnePatient } from "../state";
-import { Box, Typography, Button } from "@material-ui/core";
-import { MedicalInformation } from "@mui/icons-material";
-import { HealthAndSafety } from "@mui/icons-material";
-import { Favorite } from "@material-ui/icons";
-import { LocalHospital } from "@mui/icons-material";
+import { Button } from "@material-ui/core";
 import assertNever from "assert-never";
 import { addPatientEntry } from "../state";
 import { AddPatientEntry } from "../AddPatientModal/index";
 import { EntryFormValues } from "../AddPatientModal/AddPatientEntry";
+import { Hospital } from "./Hospital";
+import { OccupationalHealthcare } from "./OccupationalHealthcar";
+import { HealthCheck } from "./HealthCheck";
 
 const PatientSingleView = () => {
-  const [{ patient, diagnoses }, dispatch] = useStateValue();
+  const [{ patient }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
@@ -67,58 +66,6 @@ const PatientSingleView = () => {
         setError("Unknown error");
       } 
     }
-  };
-
-  const Hospital: React.FC<{entry: Entry}> = ({entry}) => {
-   return <Box m={1} sx={{border: "1px solid black", borderRadius: "5px", padding: "10px", maxWidth:"60%"}}>
-
-      <Typography>
-        <LocalHospital />{" "}
-        {entry.date}{" "}<br/> {entry.description}
-      </Typography>
-      <Typography>
-        {entry.diagnosisCodes?.map(code => <li key={code}>{code} {diagnoses[code].name}</li>)}
-      </Typography>
-       <Typography>
-        {entry.specialist}
-      </Typography>
-      <Favorite color="primary"/>
-    </Box>;
-  };
-
-  const OccupationalHealthcare: React.FC<{entry: Entry}> = ({entry}) => {
-    return <Box m={1} sx={{border: "1px solid black", borderRadius: "5px", padding: "10px", maxWidth:"60%"}}>
-       
-      <Typography>
-        <HealthAndSafety />{" "}
-        {entry.date}{" "} <br/>{entry.description}
-      </Typography>
-      <Typography>
-        {entry.specialist}
-      </Typography>
-      <Typography>
-        {entry.diagnosisCodes?.map(code => <li key={code}>{code} {diagnoses[code].name}</li>)}
-      </Typography>
-      <Favorite color="secondary"/>
-    </Box>;
-  };
-
- const HealthCheck: React.FC<{entry: Entry}> = ({entry}) => {
-    return <Box m={1} sx={{border: "1px solid black", borderRadius: "5px", padding: "10px", maxWidth:"60%"}}>
-      
-      <Typography>
-        <MedicalInformation />{" "}
-        {entry.date}{" "}<br/>{entry.description}
-      </Typography>
-      
-      <Typography>
-        {entry.specialist}
-      </Typography>
-      <Typography>
-        {entry.diagnosisCodes?.map(code => <li key={code}>{code} {diagnoses[code].name}</li>)}
-      </Typography>
-      <Favorite color="disabled" />
-    </Box>;
   };
 
   const EntryDetails: React.FC<{entry: Entry}> = ({ entry }) => {
