@@ -19,33 +19,23 @@ const getNonSensitivePatientInfo = (): NonSensitivePatientInfo[] => {
         }));
     };
 
-
 const getPatientById = (id: string) => {
-  const patient = patients.filter(p => p.id === id);
+  const patient = patients.find(p => p.id === id);
   return patient;
 };
 
 const addNewPatient = (entry: NewPatientEntry): PatientEntry => {
-  const newPatientEntry = {
-    id: id,
-    ...entry
-  };
-
+  const newPatientEntry = { id: id, ...entry };
   patients.push(newPatientEntry);
+
   return newPatientEntry;
 };
 
-const addNewEntryForPatient = (entry: NewEntryForPatient): Entry => {
-
-  const newEntryPatient = {
-    id: id,
-    ...entry
-    };
-
-  patients.find(p => p.id === id)?.entries.push(newEntryPatient as Entry);
+const addNewEntryForPatient = (patient: PatientEntry, newEntry: NewEntryForPatient): PatientEntry => {
+  const entry: Entry = { id: uuid(), ...newEntry };
+  const savedPatient = { ...patient, entries: patient.entries.concat(entry) };
   
-  return newEntryPatient;
-
+  return savedPatient;
 };
 
 export default {
