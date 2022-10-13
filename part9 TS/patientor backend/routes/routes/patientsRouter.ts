@@ -34,7 +34,6 @@ router.post('/', (req, res) => {
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const newPatientEntry = toNewPatientEntry(req.body);
-
     const addedEntry = patientService.addNewPatient(newPatientEntry);
       res.json(addedEntry);
   } catch (error: unknown) {
@@ -47,10 +46,13 @@ router.post('/', (req, res) => {
 });
 
 router.post("/:id/entries", (req, res) => {
-  try {
+  const patient = patientService.getPatientById(req.params.id);
+
+  if (patient) {
+    try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const newEntry = addEntryForPatient(req.body);
-    const addedEntry = patientService.addNewEntryForPatient(newEntry as Entry);
+    const addedEntry = patientService.addNewEntryForPatient(patient, newEntry as Entry);
     res.json(addedEntry);
 
   }  catch (error: unknown) {
@@ -59,6 +61,9 @@ router.post("/:id/entries", (req, res) => {
       errorMessage += ' Error: ' + error.message;
     }
     res.status(400).send(errorMessage);
+  }
+  } else {
+    res.status(404).send({ error: "Sorry, this patient does not exist" });
   }
 });
 
