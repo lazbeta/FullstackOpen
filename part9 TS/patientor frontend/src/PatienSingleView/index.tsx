@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Patient } from "../types";
+import { Patient, TypeOptions } from "../types";
 import { Entry } from "../types";
 import { useStateValue } from "../state";
 import { useParams } from "react-router-dom";
@@ -49,8 +49,17 @@ const PatientSingleView = () => {
 
   }, [id, dispatch]);
 
+  const patientEntryInitialValues = {
+    date: "",
+    description: "",
+    diagnosisCodes: [],
+    discharge: {},
+    specialist: "",
+    type: TypeOptions.Hospital
+  };
+
   const submitNewEntry = async (entryValues: EntryFormValues) => {
-    if (!patient) return null;
+    if (!patient) return false;
     try {
         const { data: newPatientData } = await axios.post<Patient>(`${apiBaseUrl}/patients/${patient.id}/entries`, entryValues);
         dispatch(addPatientEntry(newPatientData));
@@ -70,11 +79,11 @@ const PatientSingleView = () => {
 
   const EntryDetails: React.FC<{entry: Entry}> = ({ entry }) => {
     switch (entry.type) {
-      case "Hospital":
+      case TypeOptions.Hospital:
         return <Hospital entry={entry}/>;
-      case "OccupationalHealthcare":
+      case TypeOptions.OccupationalHealthcare:
         return <OccupationalHealthcare entry={entry}/>;
-      case "HealthCheck":
+      case TypeOptions.HealthCheck:
         return <HealthCheck entry={entry}/>;
       default:
         return assertNever(entry);
@@ -104,11 +113,12 @@ const PatientSingleView = () => {
         {
           patient && 
           <AddPatientEntry 
-          modalOpen={modalOpen}
-          onSubmit={submitNewEntry}
-          error={error}
-          onClose={closeModal}       
-        />
+            modalOpen={modalOpen}
+            onSubmit={submitNewEntry}
+            error={error}
+            onClose={closeModal}
+            initialValues={patientEntryInitialValues}      
+          />
         }
         
         <Button variant="contained" onClick={() => openModal()}>

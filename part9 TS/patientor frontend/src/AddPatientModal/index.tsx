@@ -16,6 +16,7 @@ interface EntryProps {
   onClose: () => void;
   onSubmit: (values: EntryFormValues) => void;
   error?: string;
+  initialValues: EntryFormValues;
 }
 
 export const AddPatientModal = ({ modalOpen, onClose, onSubmit, error }: Props) => {
@@ -24,20 +25,21 @@ export const AddPatientModal = ({ modalOpen, onClose, onSubmit, error }: Props) 
     <DialogTitle>Add a new patient</DialogTitle>
     <Divider />
     <DialogContent>
-      {error && <Alert severity="error">{`Error: ${error}`}</Alert>}
+      {error ? <Alert severity="error">{`Error: ${error}`}</Alert> : ''}
       <AddPatientForm onSubmit={onSubmit} onCancel={onClose} />
     </DialogContent>
   </Dialog>
 );
 };
 
-export const AddPatientEntry = ({ modalOpen, onClose, onSubmit, error }: EntryProps) => (
+export const AddPatientEntry = ({ modalOpen, onClose, onSubmit, error, initialValues }: EntryProps) => (
   <Dialog fullWidth={true} open={modalOpen} onClose={() => onClose()}>
     <DialogTitle>Add new patient entry</DialogTitle>
     <Divider />
     <DialogContent>
-      {error && <Alert severity="error">{`Error: ${error}`}</Alert>}
-      <AddPatientEntryForm onSubmit={onSubmit} onCancel={onClose} />
+      {console.log({error})}
+      {error ? <Alert severity="error">{`Error: ${error}`}</Alert> : ''}
+      <AddPatientEntryForm onSubmit={onSubmit} onCancel={onClose} initialValues={initialValues}/>
     </DialogContent>
   </Dialog>
 );
